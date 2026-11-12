@@ -2,8 +2,16 @@
 const URL = "https://www.wsu.ac.kr/page/meal_list.jsp";
 
 const clean = (s) =>
-  s.replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "")
-   .replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").trim();
+  String(s ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim();
 
 // { 식당명: { "MM.DD": { 코너명: [메뉴...] } } }
 export async function fetchMeals() {
