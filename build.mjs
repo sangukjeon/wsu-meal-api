@@ -65,8 +65,8 @@ for (const date of dates) {
 }
 
 await writeIfChanged("week.json", {
-  start: dates[0],
-  end: dates.at(-1),
+  start: dates[0] ?? null,
+  end: dates.at(-1) ?? null,
   data: Object.fromEntries(dates.map((date) => [date, days[date]])),
 });
 
@@ -76,10 +76,15 @@ await writeIfChanged("today.json", { date: today, data: todayData });
 
 await writeIfChanged("cafeterias.json", { data: cafeterias });
 
-const allDates = (await readdir(path.join(OUT, "date")))
-  .filter((f) => f.endsWith(".json"))
-  .map((f) => f.slice(0, -5))
-  .sort();
+let allDates = [];
+try {
+  allDates = (await readdir(path.join(OUT, "date")))
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => f.slice(0, -5))
+    .sort();
+} catch (err) {
+  if (err.code !== "ENOENT") throw err;
+}
 await writeIfChanged("index.json", {
   endpoints: ["today.json", "week.json", "cafeterias.json", "date/{YYYY-MM-DD}.json"],
   dates: allDates,
