@@ -5,12 +5,12 @@ const clean = (s) =>
   String(s ?? "")
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<[^>]+>/g, "")
-    .replace(/&amp;/g, "&")
     .replace(/&nbsp;/g, " ")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&") // 마지막에 바꿔야 "&amp;lt;"가 "<"로 두 번 풀리지 않는다
     .trim();
 
 // { 식당명: { "MM.DD": { 코너명: [메뉴...] } } }
